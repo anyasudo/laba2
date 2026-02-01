@@ -1,8 +1,9 @@
 #include "car.hpp"
 
 namespace mt {
+setlocale(LC_ALL, "Ru");
 
-    // приватные методы проверки 
+    // ГЇГ°ГЁГўГ ГІГ­Г»ГҐ Г¬ГҐГІГ®Г¤Г» ГЇГ°Г®ГўГҐГ°ГЄГЁ 
 
     bool Car::is_mileage_valid_(int mileage) const {
         return mileage >= 0;
@@ -13,9 +14,9 @@ namespace mt {
             return false;
         }
 
-        std::string allowed_letters = "АВЕКМНОРСТУХ";
+        std::string allowed_letters = "ГЂГ‚Г…ГЉГЊГЌГЋГђГ‘Г’Г“Г•";
 
-        // первый символ должен быть буква из списка
+        // ГЇГҐГ°ГўГ»Г© Г±ГЁГ¬ГўГ®Г« Г¤Г®Г«Г¦ГҐГ­ ГЎГ»ГІГј ГЎГіГЄГўГ  ГЁГ§ Г±ГЇГЁГ±ГЄГ 
         bool first_ok = false;
         for (char letter : allowed_letters) {
             if (plate[0] == letter) {
@@ -24,7 +25,7 @@ namespace mt {
             }
         }
 
-        // 2-4 символы должны быть цифры
+        // 2-4 Г±ГЁГ¬ГўГ®Г«Г» Г¤Г®Г«Г¦Г­Г» ГЎГ»ГІГј Г¶ГЁГґГ°Г»
         bool digits_ok = true;
         for (int i = 1; i <= 3; i++) {
             if (plate[i] < '0' || plate[i] > '9') {
@@ -33,7 +34,7 @@ namespace mt {
             }
         }
 
-        // 5-6 символы должны быть буквы из списка
+        // 5-6 Г±ГЁГ¬ГўГ®Г«Г» Г¤Г®Г«Г¦Г­Г» ГЎГ»ГІГј ГЎГіГЄГўГ» ГЁГ§ Г±ГЇГЁГ±ГЄГ 
         bool last_ok = false;
         for (char letter1 : allowed_letters) {
             for (char letter2 : allowed_letters) {
@@ -48,12 +49,12 @@ namespace mt {
         return first_ok && digits_ok && last_ok;
     }
 
-    // конструкторы
+    // ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г»
 
-    Car::Car() : brand_("Неизвестно"), model_("Неизвестно"),
-        body_number_("000000"), license_plate_("А000АА"),
+    Car::Car() : brand_("ГЌГҐГЁГ§ГўГҐГ±ГІГ­Г®"), model_("ГЌГҐГЁГ§ГўГҐГ±ГІГ­Г®"),
+        body_number_("000000"), license_plate_("ГЂ000ГЂГЂ"),
         mileage_(0) {
-        std::cerr << "Вызван конструктор по умолчанию" << std::endl;
+        std::cerr << "Г‚Г»Г§ГўГ Г­ ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЇГ® ГіГ¬Г®Г«Г·Г Г­ГЁГѕ" << std::endl;
     }
 
     Car::Car(const std::string& brand, const std::string& model,
@@ -63,17 +64,17 @@ namespace mt {
         license_plate_(license_plate), mileage_(mileage) {
 
         if (!is_mileage_valid_(mileage)) {
-            throw std::invalid_argument("Пробег должен быть неотрицательным");
+            throw std::invalid_argument("ГЏГ°Г®ГЎГҐГЈ Г¤Г®Г«Г¦ГҐГ­ ГЎГ»ГІГј Г­ГҐГ®ГІГ°ГЁГ¶Г ГІГҐГ«ГјГ­Г»Г¬");
         }
 
         if (!check_license_format_(license_plate)) {
             throw std::invalid_argument(
-                "Гос. номер должен быть в формате: БУКВА + 3 ЦИФРЫ + 2 БУКВЫ\n"
-                "Разрешенные буквы: А, В, Е, К, М, Н, О, Р, С, Т, У, Х\n"
-                "Пример: А123ВС, М456ОР, Х789ТУ");
+                "ГѓГ®Г±. Г­Г®Г¬ГҐГ° Г¤Г®Г«Г¦ГҐГ­ ГЎГ»ГІГј Гў ГґГ®Г°Г¬Г ГІГҐ: ГЃГ“ГЉГ‚ГЂ + 3 Г–Г€Г”ГђГ› + 2 ГЃГ“ГЉГ‚Г›\n"
+                "ГђГ Г§Г°ГҐГёГҐГ­Г­Г»ГҐ ГЎГіГЄГўГ»: ГЂ, Г‚, Г…, ГЉ, ГЊ, ГЌ, ГЋ, Гђ, Г‘, Г’, Г“, Г•\n"
+                "ГЏГ°ГЁГ¬ГҐГ°: ГЂ123Г‚Г‘, ГЊ456ГЋГђ, Г•789Г’Г“");
         }
 
-        std::cerr << "Вызван конструктор с параметрами" << std::endl;
+        std::cerr << "Г‚Г»Г§ГўГ Г­ ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г° Г± ГЇГ Г°Г Г¬ГҐГІГ°Г Г¬ГЁ" << std::endl;
     }
 
     Car::Car(const Car& other) :
@@ -81,13 +82,13 @@ namespace mt {
         body_number_(other.body_number_),
         license_plate_(other.license_plate_),
         mileage_(other.mileage_) {
-        std::cerr << "Вызван конструктор копирования" << std::endl;
+        std::cerr << "Г‚Г»Г§ГўГ Г­ ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГї" << std::endl;
     }
 
-    // правило трех
+    // ГЇГ°Г ГўГЁГ«Г® ГІГ°ГҐГµ
 
     Car& Car::operator=(const Car& other) {
-        std::cerr << "Вызван оператор присваивания" << std::endl;
+        std::cerr << "Г‚Г»Г§ГўГ Г­ Г®ГЇГҐГ°Г ГІГ®Г° ГЇГ°ГЁГ±ГўГ ГЁГўГ Г­ГЁГї" << std::endl;
 
         if (this != &other) {
             brand_ = other.brand_;
@@ -100,10 +101,10 @@ namespace mt {
     }
 
     Car::~Car() {
-        std::cerr << "Вызван деструктор для " << brand_ << " " << model_ << std::endl;
+        std::cerr << "Г‚Г»Г§ГўГ Г­ Г¤ГҐГ±ГІГ°ГіГЄГІГ®Г° Г¤Г«Гї " << brand_ << " " << model_ << std::endl;
     }
 
-    // геттеры
+    // ГЈГҐГІГІГҐГ°Г»
 
     std::string Car::get_brand() const {
         return brand_;
@@ -125,7 +126,7 @@ namespace mt {
         return mileage_;
     }
 
-    // сеттеры
+    // Г±ГҐГІГІГҐГ°Г»
 
     void Car::set_body_number(const std::string& body_number) {
         body_number_ = body_number;
@@ -134,38 +135,39 @@ namespace mt {
     void Car::set_license_plate(const std::string& license_plate) {
         if (!check_license_format_(license_plate)) {
             throw std::invalid_argument(
-                "Гос. номер должен быть в формате: БУКВА + 3 ЦИФРЫ + 2 БУКВЫ\n"
-                "Разрешенные буквы: А, В, Е, К, М, Н, О, Р, С, Т, У, Х\n"
-                "Пример: А123ВС, М456ОР, Х789ТУ");
+                "ГѓГ®Г±. Г­Г®Г¬ГҐГ° Г¤Г®Г«Г¦ГҐГ­ ГЎГ»ГІГј Гў ГґГ®Г°Г¬Г ГІГҐ: ГЃГ“ГЉГ‚ГЂ + 3 Г–Г€Г”ГђГ› + 2 ГЃГ“ГЉГ‚Г›\n"
+                "ГђГ Г§Г°ГҐГёГҐГ­Г­Г»ГҐ ГЎГіГЄГўГ»: ГЂ, Г‚, Г…, ГЉ, ГЊ, ГЌ, ГЋ, Гђ, Г‘, Г’, Г“, Г•\n"
+                "ГЏГ°ГЁГ¬ГҐГ°: ГЂ123Г‚Г‘, ГЊ456ГЋГђ, Г•789Г’Г“");
         }
 
         license_plate_ = license_plate;
-        std::cout << "Гос. номер успешно изменен на: " << license_plate_ << std::endl;
+        std::cout << "ГѓГ®Г±. Г­Г®Г¬ГҐГ° ГіГ±ГЇГҐГёГ­Г® ГЁГ§Г¬ГҐГ­ГҐГ­ Г­Г : " << license_plate_ << std::endl;
     }
 
-    // методы
+    // Г¬ГҐГІГ®Г¤Г»
 
     void Car::print_info() const {
-        std::cout << "=== Информация об автомобиле ===" << std::endl;
-        std::cout << "Марка: " << brand_ << std::endl;
-        std::cout << "Модель: " << model_ << std::endl;
-        std::cout << "Номер кузова: " << body_number_ << std::endl;
-        std::cout << "Гос. номер: " << license_plate_ << std::endl;
-        std::cout << "Пробег: " << mileage_ << " км" << std::endl;
+        std::cout << "=== Г€Г­ГґГ®Г°Г¬Г Г¶ГЁГї Г®ГЎ Г ГўГІГ®Г¬Г®ГЎГЁГ«ГҐ ===" << std::endl;
+        std::cout << "ГЊГ Г°ГЄГ : " << brand_ << std::endl;
+        std::cout << "ГЊГ®Г¤ГҐГ«Гј: " << model_ << std::endl;
+        std::cout << "ГЌГ®Г¬ГҐГ° ГЄГіГ§Г®ГўГ : " << body_number_ << std::endl;
+        std::cout << "ГѓГ®Г±. Г­Г®Г¬ГҐГ°: " << license_plate_ << std::endl;
+        std::cout << "ГЏГ°Г®ГЎГҐГЈ: " << mileage_ << " ГЄГ¬" << std::endl;
         std::cout << "================================" << std::endl;
     }
 
     void Car::rollback_mileage(int x) {
         if (x < 0) {
-            throw std::invalid_argument("Значение скручивания должно быть неотрицательным");
+            throw std::invalid_argument("Г‡Г­Г Г·ГҐГ­ГЁГҐ Г±ГЄГ°ГіГ·ГЁГўГ Г­ГЁГї Г¤Г®Г«Г¦Г­Г® ГЎГ»ГІГј Г­ГҐГ®ГІГ°ГЁГ¶Г ГІГҐГ«ГјГ­Г»Г¬");
         }
 
         if (mileage_ - x < 0) {
-            throw std::invalid_argument("Нельзя скрутить больше, чем текущий пробег");
+            throw std::invalid_argument("ГЌГҐГ«ГјГ§Гї Г±ГЄГ°ГіГІГЁГІГј ГЎГ®Г«ГјГёГҐ, Г·ГҐГ¬ ГІГҐГЄГіГ№ГЁГ© ГЇГ°Г®ГЎГҐГЈ");
         }
 
         mileage_ -= x;
-        std::cout << "Пробег уменьшен на " << x << " км" << std::endl;
+        std::cout << "ГЏГ°Г®ГЎГҐГЈ ГіГ¬ГҐГ­ГјГёГҐГ­ Г­Г  " << x << " ГЄГ¬" << std::endl;
     }
+
 
 }
