@@ -2,20 +2,18 @@
 
 namespace mt {
 
-    // ïðèâàòíûå ìåòîäû ïðîâåðêè 
+    // инициализация статического поля
+    int Car::total_cars_ = 0;
 
-    bool Car::is_mileage_valid_(int mileage) const {
-        return mileage >= 0;
-    }
-
+    // проверка формата номера
     bool Car::check_license_format_(const std::string& plate) const {
         if (plate.length() != 6) {
             return false;
         }
 
-        std::string allowed_letters = "ÀÂÅÊÌÍÎÐÑÒÓÕ";
+        std::string allowed_letters = "АВЕКМНОРСТУХ";
 
-        // ïåðâûé ñèìâîë äîëæåí áûòü áóêâà èç ñïèñêà
+        // первый символ должен быть буква из списка
         bool first_ok = false;
         for (char letter : allowed_letters) {
             if (plate[0] == letter) {
@@ -24,7 +22,7 @@ namespace mt {
             }
         }
 
-        // 2-4 ñèìâîëû äîëæíû áûòü öèôðû
+        // 2-4 символы должны быть цифры
         bool digits_ok = true;
         for (int i = 1; i <= 3; i++) {
             if (plate[i] < '0' || plate[i] > '9') {
@@ -33,7 +31,7 @@ namespace mt {
             }
         }
 
-        // 5-6 ñèìâîëû äîëæíû áûòü áóêâû èç ñïèñêà
+        // 5-6 символы должны быть буквы из списка
         bool last_ok = false;
         for (char letter1 : allowed_letters) {
             for (char letter2 : allowed_letters) {
@@ -48,126 +46,214 @@ namespace mt {
         return first_ok && digits_ok && last_ok;
     }
 
-    // êîíñòðóêòîðû
-
-    Car::Car() : brand_("Íåèçâåñòíî"), model_("Íåèçâåñòíî"),
-        body_number_("000000"), license_plate_("À000ÀÀ"),
-        mileage_(0) {
-        std::cerr << "Âûçâàí êîíñòðóêòîð ïî óìîë÷àíèþ" << std::endl;
+    // Конструктор по умолчанию
+    Car::Car() : brand_("Неизвестно"), model_("Неизвестно"),
+        body_number_("000000"), license_plate_("А000АА"),
+        mileage_(0), fuel_level_(100.0) {
+        total_cars_++;
+        std::cerr << "Вызван конструктор по умолчанию" << std::endl;
+        std::cerr << "Всего автомобилей создано: " << total_cars_ << std::endl;
     }
 
+    // Конструктор полного заполнения
     Car::Car(const std::string& brand, const std::string& model,
         const std::string& body_number, const std::string& license_plate,
-        int mileage) :
+        int mileage, double fuel_level) :
         brand_(brand), model_(model), body_number_(body_number),
-        license_plate_(license_plate), mileage_(mileage) {
+        license_plate_(license_plate), mileage_(mileage), fuel_level_(fuel_level) {
 
         if (!is_mileage_valid_(mileage)) {
-            throw std::invalid_argument("Ïðîáåã äîëæåí áûòü íåîòðèöàòåëüíûì");
+            throw std::invalid_argument("Пробег должен быть неотрицательным");
         }
 
+        if (!is_fuel_valid_(fuel_level)) {
+            throw std::invalid_argument("Уровень топлива должен быть от 0 до 100%");
+        }
+
+        // проверка гос. номера
         if (!check_license_format_(license_plate)) {
             throw std::invalid_argument(
-                "Ãîñ. íîìåð äîëæåí áûòü â ôîðìàòå: ÁÓÊÂÀ + 3 ÖÈÔÐÛ + 2 ÁÓÊÂÛ\n"
-                "Ðàçðåøåííûå áóêâû: À, Â, Å, Ê, Ì, Í, Î, Ð, Ñ, Ò, Ó, Õ\n"
-                "Ïðèìåð: À123ÂÑ, Ì456ÎÐ, Õ789ÒÓ");
+                "Гос. номер должен быть в формате: БУКВА + 3 ЦИФРЫ + 2 БУКВЫ\n"
+                "Разрешенные буквы: А, В, Е, К, М, Н, О, Р, С, Т, У, Х\n"
+                "Пример: А123ВС, М456ОР, Х789ТУ");
         }
 
-        std::cerr << "Âûçâàí êîíñòðóêòîð ñ ïàðàìåòðàìè" << std::endl;
+        total_cars_++;
+        std::cerr << "Вызван конструктор с параметрами" << std::endl;
+        std::cerr << "Всего автомобилей создано: " << total_cars_ << std::endl;
+
+        show_protected_info_();
     }
 
+    // Конструктор копирования
     Car::Car(const Car& other) :
         brand_(other.brand_), model_(other.model_),
         body_number_(other.body_number_),
         license_plate_(other.license_plate_),
-        mileage_(other.mileage_) {
-        std::cerr << "Âûçâàí êîíñòðóêòîð êîïèðîâàíèÿ" << std::endl;
+        mileage_(other.mileage_), fuel_level_(other.fuel_level_) {
+        total_cars_++;
+        std::cerr << "Вызван конструктор копирования" << std::endl;
+        std::cerr << "Всего автомобилей создано: " << total_cars_ << std::endl;
     }
 
-    // ïðàâèëî òðåõ
+    // деструктор
+    Car::~Car() {
+        total_cars_--;
+        std::cerr << "Вызван деструктор для " << brand_ << " " << model_ << std::endl;
+        std::cerr << "Осталось автомобилей: " << total_cars_ << std::endl;
+    }
 
+    // оператор присваивания (правило трех)
     Car& Car::operator=(const Car& other) {
-        std::cerr << "Âûçâàí îïåðàòîð ïðèñâàèâàíèÿ" << std::endl;
-
-        if (this != &other) {
+        std::cerr << "Вызван оператор присваивания" << std::endl;
+        if (this != &other) {  // защита от самоприсваивания
             brand_ = other.brand_;
             model_ = other.model_;
             body_number_ = other.body_number_;
             license_plate_ = other.license_plate_;
             mileage_ = other.mileage_;
+            fuel_level_ = other.fuel_level_;
+            car_color_ = other.car_color_;
         }
         return *this;
     }
 
-    Car::~Car() {
-        std::cerr << "Âûçâàí äåñòðóêòîð äëÿ " << brand_ << " " << model_ << std::endl;
+    // оператор + для заправки топлива
+    Car Car::operator+(double fuel) const {
+        std::cout << "Использован оператор + для заправки " << fuel << " литров" << std::endl;
+        Car result = *this;  // копия
+        result.refuel(fuel);  // заправка копии
+        return result;
     }
 
-    // ãåòòåðû
-
-    std::string Car::get_brand() const {
-        return brand_;
+    // оператор - для расхода топлива
+    Car Car::operator-(double fuel) const {
+        std::cout << "Использован оператор - для расхода " << fuel << " литров" << std::endl;
+        Car result = *this;  // копия
+        result.consume_fuel(fuel);  // расход топлива в копии
+        return result;
     }
 
-    std::string Car::get_model() const {
-        return model_;
+    // оператор сравнения ==
+    bool Car::operator==(const Car& other) const {
+        return (brand_ == other.brand_ &&
+            model_ == other.model_ &&
+            body_number_ == other.body_number_ &&
+            license_plate_ == other.license_plate_ &&
+            mileage_ == other.mileage_ &&
+            fuel_level_ == other.fuel_level_);
     }
 
-    std::string Car::get_body_number() const {
-        return body_number_;
-    }
-
-    std::string Car::get_license_plate() const {
-        return license_plate_;
-    }
-
-    int Car::get_mileage() const {
-        return mileage_;
-    }
-
-    // ñåòòåðû
-
-    void Car::set_body_number(const std::string& body_number) {
-        body_number_ = body_number;
-    }
-
+    // сеттер для гос. номера с проверкой
     void Car::set_license_plate(const std::string& license_plate) {
+        // проверяем номер
         if (!check_license_format_(license_plate)) {
             throw std::invalid_argument(
-                "Ãîñ. íîìåð äîëæåí áûòü â ôîðìàòå: ÁÓÊÂÀ + 3 ÖÈÔÐÛ + 2 ÁÓÊÂÛ\n"
-                "Ðàçðåøåííûå áóêâû: À, Â, Å, Ê, Ì, Í, Î, Ð, Ñ, Ò, Ó, Õ\n"
-                "Ïðèìåð: À123ÂÑ, Ì456ÎÐ, Õ789ÒÓ");
+                "Гос. номер должен быть в формате: БУКВА + 3 ЦИФРЫ + 2 БУКВЫ\n"
+                "Разрешенные буквы: А, В, Е, К, М, Н, О, Р, С, Т, У, Х\n"
+                "Пример: А123ВС, М456ОР, Х789ТУ");
         }
 
         license_plate_ = license_plate;
-        std::cout << "Ãîñ. íîìåð óñïåøíî èçìåíåí íà: " << license_plate_ << std::endl;
+        std::cout << "Гос. номер успешно изменен на: " << license_plate_ << std::endl;
     }
 
-    // ìåòîäû
+    // сеттер для уровня топлива
+    void Car::set_fuel_level(double fuel_level) {
+        if (!is_fuel_valid_(fuel_level)) {
+            throw std::invalid_argument("Уровень топлива должен быть от 0 до 100%");
+        }
+        fuel_level_ = fuel_level;
+        std::cout << "Уровень топлива установлен: " << fuel_level_ << "%" << std::endl;
+    }
 
+    // метод для вывода всей информации
     void Car::print_info() const {
-        std::cout << "=== Èíôîðìàöèÿ îá àâòîìîáèëå ===" << std::endl;
-        std::cout << "Ìàðêà: " << brand_ << std::endl;
-        std::cout << "Ìîäåëü: " << model_ << std::endl;
-        std::cout << "Íîìåð êóçîâà: " << body_number_ << std::endl;
-        std::cout << "Ãîñ. íîìåð: " << license_plate_ << std::endl;
-        std::cout << "Ïðîáåã: " << mileage_ << " êì" << std::endl;
+        std::cout << "=== Информация об автомобиле ===" << std::endl;
+        std::cout << "Марка: " << brand_ << std::endl;
+        std::cout << "Модель: " << model_ << std::endl;
+        std::cout << "Номер кузова: " << body_number_ << std::endl;
+        std::cout << "Гос. номер: " << license_plate_ << std::endl;
+        std::cout << "Пробег: " << mileage_ << " км" << std::endl;
+        std::cout << "Уровень топлива: " << fuel_level_ << "%" << std::endl;  // ДОБАВЛЕНО
         std::cout << "================================" << std::endl;
     }
 
+    // метод для скручивания пробега на X
     void Car::rollback_mileage(int x) {
         if (x < 0) {
-            throw std::invalid_argument("Çíà÷åíèå ñêðó÷èâàíèÿ äîëæíî áûòü íåîòðèöàòåëüíûì");
+            throw std::invalid_argument("Значение скручивания должно быть неотрицательным");
         }
 
         if (mileage_ - x < 0) {
-            throw std::invalid_argument("Íåëüçÿ ñêðóòèòü áîëüøå, ÷åì òåêóùèé ïðîáåã");
+            throw std::invalid_argument("Нельзя скрутить больше, чем текущий пробег");
         }
 
         mileage_ -= x;
-        std::cout << "Ïðîáåã óìåíüøåí íà " << x << " êì" << std::endl;
+        std::cout << "Пробег уменьшен на " << x << " км" << std::endl;
     }
 
+    // метод для увеличения пробега
+    void Car::drive(int distance) {
+        if (distance < 0) {
+            throw std::invalid_argument("Расстояние должно быть неотрицательным");
+        }
+
+        // расход топлива при поездке, условно 10 литров на 100 км
+        double fuel_needed = distance * 0.1;
+        if (fuel_needed > fuel_level_) {
+            throw std::runtime_error("Недостаточно топлива для поездки!");
+        }
+
+        mileage_ += distance;
+        fuel_level_ -= fuel_needed;
+        std::cout << "Автомобиль проехал " << distance << " км" << std::endl;
+        std::cout << "Расход топлива: " << fuel_needed << " литров" << std::endl;
+    }
+
+    // метод заправки
+    void Car::refuel(double liters) {
+        if (liters < 0) {
+            throw std::invalid_argument("Количество топлива должно быть неотрицательным");
+        }
+
+        double new_fuel = fuel_level_ + liters;
+        if (new_fuel > 100) {
+            fuel_level_ = 100;
+            std::cout << "Бак полностью заправлен (100%)" << std::endl;
+        }
+        else {
+            fuel_level_ = new_fuel;
+            std::cout << "Заправлено " << liters << " литров. Текущий уровень: " << fuel_level_ << "%" << std::endl;
+        }
+    }
+
+    // метод расхода топлива
+    void Car::consume_fuel(double liters) {
+        if (liters < 0) {
+            throw std::invalid_argument("Расход топлива должен быть неотрицательным");
+        }
+
+        if (liters > fuel_level_) {
+            throw std::runtime_error("Недостаточно топлива!");
+        }
+
+        fuel_level_ -= liters;
+        std::cout << "Израсходовано " << liters << " литров. Осталось: " << fuel_level_ << "%" << std::endl;
+    }
+
+    // проверка уровня топлива
+    void Car::check_fuel_status() const {
+        std::cout << "Уровень топлива: " << fuel_level_ << "%" << std::endl;
+        if (fuel_level_ < 10) {
+            std::cout << "ВНИМАНИЕ: Низкий уровень топлива! Рекомендуется заправиться." << std::endl;
+        }
+        else if (fuel_level_ > 90) {
+            std::cout << "Бак почти полный." << std::endl;
+        }
+        else {
+            std::cout << "Уровень топлива нормальный." << std::endl;
+        }
+    }
 
 }
-
