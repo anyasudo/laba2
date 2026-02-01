@@ -1,7 +1,6 @@
 #include "car.hpp"
 
 namespace mt {
-setlocale(LC_ALL, "Ru");
 
     // ïðèâàòíûå ìåòîäû ïðîâåðêè 
 
@@ -171,3 +170,4 @@ setlocale(LC_ALL, "Ru");
 
 
 }
+
