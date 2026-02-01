@@ -1,86 +1,125 @@
 #include "car.hpp"
-#include <iostream>
-
-using namespace std;
 
 int main() {
     setlocale(LC_ALL, "Ru");
-
-    cout << "=== ÒÅÑÒÈÐÎÂÀÍÈÅ ÏÐÀÂÈËÀ ÒÐÅÕ ===" << endl;
-
     try {
-        // ñîçäàíèå îáúåêòîâ
-        cout << "\n1. Ñîçäàíèå car1 (êîíñòðóêòîð ïî óìîë÷àíèþ):" << endl;
+        std::cout << "=== Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ car1 Ñ ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€Ð¾Ð¼ Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ ===" << std::endl;
         mt::Car car1;
+        car1.print_info();
 
-        cout << "\n2. Ñîçäàíèå car2 (êîíñòðóêòîð ñ ïàðàìåòðàìè):" << endl;
-        mt::Car car2("Toyota", "Camry", "123456789", "À123ÂÑ", 50000);
+        // Ñ€Ð°Ð±Ð¾Ñ‚Ð° Ñ protected Ð´Ð°Ð½Ð½Ñ‹Ð¼Ð¸ Ñ‡ÐµÑ€ÐµÐ· Ð¿ÑƒÐ±Ð»Ð¸Ñ‡Ð½Ñ‹Ðµ Ð¼ÐµÑ‚Ð¾Ð´Ñ‹
+        car1.show_color();
+        car1.set_color("ÐšÑ€Ð°ÑÐ½Ñ‹Ð¹");
+        car1.show_color();
+
+        std::cout << "\n=== Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ car2 Ñ ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€Ð¾Ð¼ Ñ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð°Ð¼Ð¸ ===" << std::endl;
+        mt::Car car2("Toyota", "Camry", "123456789", "Ð123Ð’Ð¡", 50000, 75.5);
         car2.print_info();
 
-        // êîíñòðóêòîð êîïèðîâàíèÿ
-        cout << "\n3. Ïðàâèëî òðåõ - êîíñòðóêòîð êîïèðîâàíèÿ (car3 = car2):" << endl;
+        std::cout << "\n=== Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ car3 ÐºÐ°Ðº ÐºÐ¾Ð¿Ð¸Ð¸ car2 ===" << std::endl;
         mt::Car car3 = car2;
         car3.print_info();
 
-        // îïåðàòîð ïðèñâàèâàíèÿ
-        cout << "\n4. Ïðàâèëî òðåõ - îïåðàòîð ïðèñâàèâàíèÿ (car1 = car2):" << endl;
-        car1 = car2;
-        car1.print_info();
-
-        // òåñò ñàìîïðèñâàèâàíèÿ
-        cout << "\n5. Òåñò ñàìîïðèñâàèâàíèÿ (car1 = car1):" << endl;
-        car1 = car1;
-        cout << "Ñàìîïðèñâàèâàíèå âûïîëíåíî óñïåøíî" << endl;
-
-        // öåïî÷êà ïðèñâàèâàíèé
-        cout << "\n6. Öåïî÷êà ïðèñâàèâàíèé (car4 = car5 = car2):" << endl;
-        mt::Car car4, car5;
-        car4 = car5 = car2;
+        std::cout << "\n=== Ð¢ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð° Ð¿Ñ€Ð¸ÑÐ²Ð°Ð¸Ð²Ð°Ð½Ð¸Ñ ===" << std::endl;
+        mt::Car car4;
+        car4 = car2;  // Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð° =
+        std::cout << "ÐŸÐ¾ÑÐ»Ðµ Ð¿Ñ€Ð¸ÑÐ²Ð°Ð¸Ð²Ð°Ð½Ð¸Ñ car4 = car2:" << std::endl;
         car4.print_info();
 
-        cout << "\n=== ÎÑÒÀËÜÍÛÅ ÌÅÒÎÄÛ ÏÎ ÂÀÐÈÀÍÒÓ 2 ===" << endl;
+        std::cout << "\n=== Ð¢ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð¾Ð² + Ð¸ - ===" << std::endl;
+        car1.set_fuel_level(50.0);
+        std::cout << "car1 Ð´Ð¾ Ð·Ð°Ð¿Ñ€Ð°Ð²ÐºÐ¸: ";
+        car1.check_fuel_status();
 
-        // ñåòòåðû
-        cout << "\n7. Òåñòèðîâàíèå ñåòòåðà ãîñ. íîìåðà:" << endl;
-        car1.set_license_plate("Ì456ÎÐ");
-        car1.print_info();
+        // Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð° +
+        mt::Car car5 = car1 + 30.0;
+        std::cout << "car5 Ð¿Ð¾ÑÐ»Ðµ Ð·Ð°Ð¿Ñ€Ð°Ð²ÐºÐ¸: ";
+        car5.check_fuel_status();
 
-        cout << "\n8. Òåñòèðîâàíèå ñåòòåðà íîìåðà êóçîâà:" << endl;
+        // Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð° -
+        mt::Car car6 = car5 - 20.0;
+        std::cout << "car6 Ð¿Ð¾ÑÐ»Ðµ Ñ€Ð°ÑÑ…Ð¾Ð´Ð°: ";
+        car6.check_fuel_status();
+
+        std::cout << "\n=== Ð¢ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð° ÑÑ€Ð°Ð²Ð½ÐµÐ½Ð¸Ñ ===" << std::endl;
+        std::cout << "car2 == car3: " << (car2 == car3 ? "true" : "false") << std::endl;
+        std::cout << "car2 == car4: " << (car2 == car4 ? "true" : "false") << std::endl;
+        std::cout << "car1 == car2: " << (car1 == car2 ? "true" : "false") << std::endl;
+
+        std::cout << "\n=== Ð¢ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ ÑÐµÑ‚Ñ‚ÐµÑ€Ð¾Ð² Ð½Ð° car1 ===" << std::endl;
         car1.set_body_number("987654321");
+        car1.set_license_plate("Ðœ456ÐžÐ ");
         car1.print_info();
 
-        cout << "\n9. Òåñòèðîâàíèå ñêðó÷èâàíèÿ ïðîáåãà:" << endl;
-        car1.rollback_mileage(10000);
+        std::cout << "\n=== Ð¢ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¼ÐµÑ‚Ð¾Ð´Ð° Ð¿Ð¾ÐµÐ·Ð´ÐºÐ¸ ===" << std::endl;
+        car1.set_fuel_level(100.0);
+        car1.drive(100);
         car1.print_info();
 
-        cout << "\n10. Òåñòèðîâàíèå ãåòòåðîâ:" << endl;
-        cout << "Ìàðêà: " << car2.get_brand() << endl;
-        cout << "Ìîäåëü: " << car2.get_model() << endl;
-        cout << "Íîìåð êóçîâà: " << car2.get_body_number() << endl;
-        cout << "Ãîñ. íîìåð: " << car2.get_license_plate() << endl;
-        cout << "Ïðîáåã: " << car2.get_mileage() << " êì" << endl;
+        std::cout << "\n=== Ð¢ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ ÑÐºÑ€ÑƒÑ‡Ð¸Ð²Ð°Ð½Ð¸Ñ Ð¿Ñ€Ð¾Ð±ÐµÐ³Ð° ===" << std::endl;
+        car1.rollback_mileage(50);
+        car1.print_info();
 
-        // Òåñò îøèáîê
-        cout << "\n11. Òåñòèðîâàíèå îøèáîê:" << endl;
+        std::cout << "\n=== Ð¢ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¼ÐµÑ‚Ð¾Ð´Ð¾Ð² Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ñ Ñ‚Ð¾Ð¿Ð»Ð¸Ð²Ð¾Ð¼ ===" << std::endl;
+        car1.set_fuel_level(30.0);
+        car1.check_fuel_status();
+        car1.refuel(40.0);
+        car1.check_fuel_status();
+        car1.consume_fuel(25.0);
+        car1.check_fuel_status();
+
+        std::cout << "\n=== Ð¢ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð³ÐµÑ‚Ñ‚ÐµÑ€Ð¾Ð² ===" << std::endl;
+        std::cout << "ÐœÐ°Ñ€ÐºÐ°: " << car2.get_brand() << std::endl;
+        std::cout << "ÐœÐ¾Ð´ÐµÐ»ÑŒ: " << car2.get_model() << std::endl;
+        std::cout << "ÐŸÑ€Ð¾Ð±ÐµÐ³: " << car2.get_mileage() << " ÐºÐ¼" << std::endl;
+        std::cout << "Ð¢Ð¾Ð¿Ð»Ð¸Ð²Ð¾: " << car2.get_fuel_level() << "%" << std::endl;
+        std::cout << "Ð’ÑÐµÐ³Ð¾ Ð°Ð²Ñ‚Ð¾Ð¼Ð¾Ð±Ð¸Ð»ÐµÐ¹: " << mt::Car::get_total_cars() << std::endl;
+
+        // Ñ‚ÐµÑÑ‚ Ð½Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ¸ Ñ Ð¿Ñ€Ð¾Ð±ÐµÐ³Ð¾Ð¼
+        std::cout << "\n=== Ð¢ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ¸ Ð¾ÑˆÐ¸Ð±Ð¾Ðº ===" << std::endl;
         try {
-            car1.rollback_mileage(100000); // ñëèøêîì ìíîãî
+            car1.rollback_mileage(1000); // Ð±Ð¾Ð»ÑŒÑˆÐµ Ñ‡ÐµÐ¼ Ð¿Ñ€Ð¾Ð±ÐµÐ³
         }
-        catch (const exception& e) {
-            cout << "Îøèáêà: " << e.what() << endl;
+        catch (const std::exception& e) {
+            std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ°: " << e.what() << std::endl;
+        }
+
+        // Ñ‚ÐµÑÑ‚Ñ‹ Ñ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸ÐµÐ¼ Ð°Ð²Ñ‚Ð¾ Ñ Ð¾ÑˆÐ¸Ð±ÐºÐ°Ð¼Ð¸
+        std::cout << "\n=== Ð¢ÐµÑÑ‚Ñ‹ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ñ Ð°Ð²Ñ‚Ð¾ Ñ Ð¾ÑˆÐ¸Ð±ÐºÐ°Ð¼Ð¸ ===" << std::endl;
+        try {
+            std::cout << "\nÐŸÐ¾Ð¿Ñ‹Ñ‚ÐºÐ° ÑÐ¾Ð·Ð´Ð°Ñ‚ÑŒ Ð¼Ð°ÑˆÐ¸Ð½Ñƒ Ñ Ð¾Ñ‚Ñ€Ð¸Ñ†Ð°Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ð¼ Ð¿Ñ€Ð¾Ð±ÐµÐ³Ð¾Ð¼:" << std::endl;
+            mt::Car error_car("BMW", "X5", "555555", "Ð¥555Ð¥Ð¥", -100, 50.0);
+        }
+        catch (const std::exception& e) {
+            std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ° Ð¿Ñ€Ð¸ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ð¸: " << e.what() << std::endl;
         }
 
         try {
-            car1.set_license_plate("ÍÅÏÐÀÂÈËÜÍÛÉ");
+            std::cout << "\nÐŸÐ¾Ð¿Ñ‹Ñ‚ÐºÐ° ÑÐ¾Ð·Ð´Ð°Ñ‚ÑŒ Ð¼Ð°ÑˆÐ¸Ð½Ñƒ Ñ Ð½ÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ð¼ ÑƒÑ€Ð¾Ð²Ð½ÐµÐ¼ Ñ‚Ð¾Ð¿Ð»Ð¸Ð²Ð°:" << std::endl;
+            mt::Car error_car("BMW", "X5", "555555", "Ð¥555Ð¥Ð¥", 10000, 150.0);
         }
-        catch (const exception& e) {
-            cout << "Îøèáêà: " << e.what() << endl;
+        catch (const std::exception& e) {
+            std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ° Ð¿Ñ€Ð¸ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ð¸: " << e.what() << std::endl;
         }
+
+        try {
+            std::cout << "\nÐŸÐ¾Ð¿Ñ‹Ñ‚ÐºÐ° Ð¿Ñ€Ð¾ÐµÑ…Ð°Ñ‚ÑŒ Ð±ÐµÐ· Ð´Ð¾ÑÑ‚Ð°Ñ‚Ð¾Ñ‡Ð½Ð¾Ð³Ð¾ Ñ‚Ð¾Ð¿Ð»Ð¸Ð²Ð°:" << std::endl;
+            car2.set_fuel_level(5.0);
+            car2.drive(100);
+        }
+        catch (const std::exception& e) {
+            std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ°: " << e.what() << std::endl;
+        }
+
+        std::cout << "\n=== ÐŸÑ€Ð¸Ð¼ÐµÑ€Ñ‹ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ñ… Ð½Ð¾Ð¼ÐµÑ€Ð¾Ð² ===" << std::endl;
+        std::cout << "ÐŸÑ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ðµ Ð½Ð¾Ð¼ÐµÑ€Ð°: Ð123Ð’Ð¡, Ð•456ÐšÐœ, Ðž789Ð Ð¢, Ð¥123Ð¡Ð¢" << std::endl;
+        std::cout << "ÐÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ðµ: Ð¯123Ð’Ð¡ (Ð¯ Ð½Ðµ Ñ€Ð°Ð·Ñ€ÐµÑˆÐµÐ½Ð°), ÐÐ‘Ð’123 (Ð±ÑƒÐºÐ²Ñ‹ Ð½Ðµ Ñ‚Ð°Ð¼), 123ÐÐ’Ð¡ (Ð½Ð°Ñ‡Ð¸Ð½Ð°ÐµÑ‚ÑÑ Ñ Ñ†Ð¸Ñ„Ñ€Ñ‹)" << std::endl;
 
     }
-    catch (const exception& e) {
-        cerr << "Èñêëþ÷åíèå: " << e.what() << endl;
+    catch (const std::exception& e) {
+        std::cerr << "Ð˜ÑÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ðµ: " << e.what() << std::endl;
     }
 
-    cout << "\n=== ÊÎÍÅÖ ÏÐÎÃÐÀÌÌÛ ===" << endl;
+    std::cout << "\n=== ÐšÐ¾Ð½ÐµÑ† Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹ ===" << std::endl;
     return 0;
 }
